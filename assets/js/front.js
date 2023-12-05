@@ -1,10 +1,11 @@
 const apiBaseUrl = `https://livejs-api.hexschool.io/api/livejs/v1/customer/zhu001`;
 
-const elmtProductArea = document.querySelector(".productWrap");
-const elmtCartBody = document.querySelector(".shoppingCart-body");
-const elmtBtnDeleteAll = document.querySelector(".discardAllBtn");
-const elmtOrderForm = document.querySelector(".orderInfo-form");
-const elmtBtnSaveOrder = document.querySelector(".orderInfo-btn");
+const elmtProductFilter = document.querySelector(".productSelect");	// 產品篩選下拉選單
+const elmtProductArea = document.querySelector(".productWrap");	// 產品區域
+const elmtCartBody = document.querySelector(".shoppingCart-body");	// 購物車 table
+const elmtBtnDeleteAll = document.querySelector(".discardAllBtn");	// button - 刪除所有品項
+const elmtOrderForm = document.querySelector(".orderInfo-form");	// 預訂資料表單
+const elmtBtnSaveOrder = document.querySelector(".orderInfo-btn");	// button - 送出預訂資料
 
 let products;
 
@@ -17,11 +18,36 @@ function processProductArea()
 	axios.get(url)
 		.then(function (res) {
 			products = res.data.products;
+			renderProductFilter(products);
 			renderProductArea(products);
 		})
 		.catch(utility.processAxiosError);
 }
 
+// 產品篩選下拉選單
+function renderProductFilter(list)
+{
+	// category
+	const categories = [];
+	
+	list.forEach(function (item) {
+		const category = item.category;
+		if (!categories.includes(category)) {
+			categories.push(category);
+		}
+	});
+	categories.sort();
+	
+	// 按 category 建立下拉選單 option
+	categories.forEach(function (item) {
+		const option = document.createElement("option");
+		option.value = item;
+		option.textContent = item;
+		elmtProductFilter.insertAdjacentElement("beforeend", option);
+	});
+}
+
+// 產品區域
 function renderProductArea(list)
 {
 	let html = ``;
@@ -37,6 +63,7 @@ function renderProductArea(list)
 	}
 }
 
+// 單一產品
 function getHtmlProductCard (item)
 {
 	let html = '';
@@ -81,6 +108,7 @@ function processCartArea()
 		.catch(utility.processAxiosError);
 }
 
+// 購物車區域
 function renderCartArea(cartData)
 {
 	try
@@ -110,6 +138,7 @@ function renderCartArea(cartData)
 	}
 }
 
+// 單一購物車
 function getHtmlCart(item)
 {
 	const cartId = item.id;
@@ -219,7 +248,7 @@ function saveOrder()
 			"user": {
 				"name": document.querySelector("#customerName").value,
 				"tel": document.querySelector("#customerPhone").value,
-				"email": document.querySelector("#customerPhone").value,
+				"email": document.querySelector("#customerEmail").value,
 				"address": document.querySelector("#customerAddress").value,
 				"payment": document.querySelector("#tradeWay").value
 			}
@@ -239,7 +268,7 @@ function saveOrder()
 function init()
 {
 	// 商品篩選下拉選單
-	document.querySelector(".productSelect").addEventListener("change", function (e) {
+	elmtProductFilter.addEventListener("change", function (e) {
 		filterProduct(e.target.value);
 	});
 	
