@@ -9,8 +9,4 @@ const utility =
 	},
 	
 	formatCurrency: number => new Intl.NumberFormat().format(number),
-	
-	countSubtotal: function (price, quantity) {
-		return this.formatCurrency(price * quantity);
-	},
 };

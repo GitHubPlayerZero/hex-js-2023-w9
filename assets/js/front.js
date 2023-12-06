@@ -1,4 +1,10 @@
-const apiBaseUrl = `https://livejs-api.hexschool.io/api/livejs/v1/customer/zhu001`;
+const myUrl = new URL(location.href);
+const apiPath = myUrl.searchParams.get("apiPath");
+
+const apiBaseUrl = `https://livejs-api.hexschool.io/api/livejs/v1/customer/${apiPath}`;
+const apiProducts = `${apiBaseUrl}/products`;
+const apiCarts = `${apiBaseUrl}/carts`;
+const apiOrders = `${apiBaseUrl}/orders`;
 
 const elmtProductFilter = document.querySelector(".productSelect");	// 產品篩選下拉選單
 const elmtProductArea = document.querySelector(".productWrap");	// 產品區域
@@ -7,15 +13,15 @@ const elmtBtnDeleteAll = document.querySelector(".discardAllBtn");	// button - �
 const elmtOrderForm = document.querySelector(".orderInfo-form");	// 預訂資料表單
 const elmtBtnSaveOrder = document.querySelector(".orderInfo-btn");	// button - 送出預訂資料
 
+const countSubtotal = (price, quantity) => utility.formatCurrency(price * quantity);
+
 let products;
 
 
 /* 商品 */
 function processProductArea()
 {
-	const url = `${apiBaseUrl}/products`;
-	
-	axios.get(url)
+	axios.get(apiProducts)
 		.then(function (res) {
 			products = res.data.products;
 			renderProductFilter(products);
@@ -43,7 +49,7 @@ function renderProductFilter(list)
 		const option = document.createElement("option");
 		option.value = item;
 		option.textContent = item;
-		elmtProductFilter.insertAdjacentElement("beforeend", option);
+		elmtProductFilter.appendChild(option);
 	});
 }
 
@@ -99,9 +105,7 @@ function filterProduct(category)
 /* 購物車 */
 function processCartArea()
 {
-	const url = `${apiBaseUrl}/carts`;
-	
-	axios.get(url)
+	axios.get(apiCarts)
 		.then(function (res) {
 			renderCartArea(res.data);
 		})
@@ -166,7 +170,7 @@ function getHtmlCart(item)
 	html += `<td>${quantity}</td>`;
 	
 	// 金額
-	html += `<td>NT$${utility.countSubtotal(price, quantity)}</td>`;
+	html += `<td>NT$${countSubtotal(price, quantity)}</td>`;
 	
 	// button : 刪除
 	html += `<td class="discardBtn">`;
@@ -182,12 +186,11 @@ function getHtmlCart(item)
 // 加入 / 修改購物車
 function addModifyCart(elmt)
 {
-	const url = `${apiBaseUrl}/carts`;
 	const productId = elmt.dataset.productId;
 	const elmtCart = elmtCartBody.querySelector(`[data-product-id='${productId}']`);
 	
 	const axiosConfig = {
-		url: url,
+		url: apiCarts,
 	};
 	
 	// 資料已存在 : modify
@@ -224,7 +227,7 @@ function addModifyCart(elmt)
 // 刪除購物車
 function deleteCart(id)
 {
-	let url = `${apiBaseUrl}/carts`;
+	let url = apiCarts;
 	
 	if (id) {
 		url += `/${id}`;
@@ -241,8 +244,6 @@ function deleteCart(id)
 // 送出訂單
 function saveOrder()
 {
-	const url = `${apiBaseUrl}/orders`;
-	
 	const data = {
 		"data": {
 			"user": {
@@ -255,7 +256,7 @@ function saveOrder()
 		}
 	};
 	
-	axios.post(url, data)
+	axios.post(apiOrders, data)
 		.then(function (res) {
 			alert("訂購成功！｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡");
 			elmtOrderForm.reset();
