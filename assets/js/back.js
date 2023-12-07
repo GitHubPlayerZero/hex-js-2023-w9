@@ -11,6 +11,7 @@ const config = {
 	}
 };
 
+const elmtChartArea = document.querySelector(".chartArea");
 const elmtOrderList = document.querySelector("#orderList");
 
 
@@ -26,7 +27,15 @@ function processOrder()
 
 function renderOrder(orders)
 {
-	try {
+	try
+	{
+		if (orders && orders.length > 0) {
+			elmtChartArea.classList.remove("d-none");
+		}
+		else {
+			elmtChartArea.classList.add("d-none");
+		}
+		
 		renderOrderTable(orders);
 		processChart(orders);
 	}
