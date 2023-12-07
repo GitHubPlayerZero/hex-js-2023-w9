@@ -1,0 +1,175 @@
+<!--
+	版型範本：https://codepen.io/hexschool/pen/WNJXgrR
+	設計稿 1：https://xd.adobe.com/view/a48b8617-4588-4817-9062-b62130dce916-f1d8/screen/758c0ca4-bdc9-41e5-a887-cd96942b2888/specs/
+	設計稿 2：https://xd.adobe.com/view/a48b8617-4588-4817-9062-b62130dce916-f1d8/screen/d87a8f12-a78b-4b32-9ffd-30c7b5a06bb2/specs/
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>最終關卡（後台）</title>
+	
+	<link rel="stylesheet" href="./assets/vendor/c3/c3.min.css">
+	<link rel="stylesheet" href="./assets/css/back.css">
+</head>
+
+<body>
+	
+	<!-- header -->
+	<nav class="topBar">
+		<div class="wrap">
+			<h1><a href="#" class="logo">WOWOROOM</a></h1>
+			<span class="material-icons menuToggle">
+				menu
+			</span>
+			<ul class="topBar-menu">
+				<li><a href="#">後台管理</a></li>
+				<li><a href="#">管理員登入</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	
+	<!-- 全產品類別營收比重 chart -->
+	<section class="wrap mb-14">
+		<h2 class="section-title">全產品類別營收比重</h2>
+		<div id="chartCategory"></div>
+	</section>
+	
+	<!-- 全品項營收比重 chart -->
+	<section class="wrap">
+		<h2 class="section-title">全品項營收比重</h2>
+		<div id="chartProduct"></div>
+	</section>
+	
+	
+	<!-- 訂單列表 -->
+	<section class="wrap orderPage-list">
+		
+		<a href="#" class="discardAllBtn">清除全部訂單</a>
+		
+		<div class="orderTableWrap">
+			
+			<table class="orderPage-table">
+				<thead>
+					<tr>
+						<th>訂單編號</th>
+						<th>聯絡人</th>
+						<th>聯絡地址</th>
+						<th>電子郵件</th>
+						<th>訂單品項</th>
+						<th>訂單日期</th>
+						<th>訂單狀態</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				
+				<tbody id="orderList">
+					<!-- <tr>
+						<td>10088377474</td>
+						<td>
+							<p>小杰</p>
+							<p>0912345678</p>
+						</td>
+						<td>高雄市前鎮區六合路183巷66號</td>
+						<td>cccexample@gmail.com</td>
+						<td>
+							<p>Louvre 雙人床架</p>
+						</td>
+						<td>2021/03/08</td>
+						<td class="orderStatus">
+							<a href="#">未處理</a>
+						</td>
+						<td>
+							<input type="button" class="delSingleOrder-Btn" value="刪除">
+						</td>
+					</tr>
+					<tr>
+						<td>10088377475</td>
+						<td>
+							<p>麥特</p>
+							<p>0912345678</p>
+						</td>
+						<td>桃園市平鎮區榮耀路13巷90號</td>
+						<td>wwexample@gmail.com</td>
+						<td>
+							<p>Louvre 雙人床架</p>
+						</td>
+						<td>2021/03/08</td>
+						<td class="orderStatus">
+							<a href="#">已處理</a>
+						</td>
+						<td>
+							<input type="button" class="delSingleOrder-Btn" value="刪除">
+						</td>
+					</tr>
+					<tr>
+						<td>10088377581</td>
+						<td>
+							<p>歐爾</p>
+							<p>0912345678</p>
+						</td>
+						<td>高雄市苓雅區武廟路22巷188號</td>
+						<td>68example@gmail.com</td>
+						<td>
+							<p>Louvre 雙人床架</p>
+						</td>
+						<td>2021/03/08</td>
+						<td class="orderStatus">
+							<a href="#">未處理</a>
+						</td>
+						<td>
+							<input type="button" class="delSingleOrder-Btn" value="刪除">
+						</td>
+					</tr> -->
+				</tbody>
+			</table>
+			
+		</div>
+		
+	</section>
+	
+	
+	
+	<!-- 預設 JS，請同學不要修改此處 -->
+	<script>
+		
+		let menuOpenBtn = document.querySelector('.menuToggle');
+		let linkBtn = document.querySelectorAll('.topBar-menu a');
+		let menu = document.querySelector('.topBar-menu');
+		menuOpenBtn.addEventListener('click', menuToggle);
+
+		linkBtn.forEach((item) => {
+			item.addEventListener('click', closeMenu);
+		})
+
+		function menuToggle() {
+			if (menu.classList.contains('openMenu')) {
+				menu.classList.remove('openMenu');
+			} else {
+				menu.classList.add('openMenu');
+			}
+		}
+		function closeMenu() {
+			menu.classList.remove('openMenu');
+		}
+		
+	</script>
+	
+	<!-- C3 D3 -->
+	<script src="./assets/vendor/d3/d3.v5.16.0.min.js" charset="utf-8"></script>
+	<script src="./assets/vendor/c3/c3.min.js"></script>
+	
+	<!-- Axios -->
+	<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+	
+	<script src="./assets/js/common/dateUtil.js"></script>
+	<script src="./assets/js/common/utility.js"></script>
+	<script src="./assets/js/back.js"></script>
+
+</body>
+
+</html>
